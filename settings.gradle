@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Apk-Reinforcer"
 include ':app'
+include ':apk-reinforcer'
