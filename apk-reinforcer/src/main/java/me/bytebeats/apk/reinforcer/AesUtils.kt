@@ -50,15 +50,20 @@ fun createKey(password: String?): Key? = try {
     null
 }
 
-fun encrypt(content: String?, key: Key?): ByteArray? = try {
-    if (content.isNullOrEmpty() || key == null) {
+
+@JvmOverloads
+fun encrypt(content: String?, key: Key? = createKey(DEFAULT_PASSWORD)): ByteArray? =
+    encrypt(content?.toByteArray(Charsets.UTF_8), key)
+
+@JvmOverloads
+fun encrypt(content: ByteArray?, key: Key? = createKey(DEFAULT_PASSWORD)): ByteArray? = try {
+    if (content == null || key == null) {
         null
     } else {
         val cipher = Cipher.getInstance(ALGORITHM_AES_ECB_PKCS5PADDING)
-        val contentInByte = content.toByteArray(Charsets.UTF_8)
         cipher.init(Cipher.ENCRYPT_MODE, key)
         //将加密并编码后的内容解码成字节数组
-        val encrypted = cipher.doFinal(contentInByte)
+        val encrypted = cipher.doFinal(content)
         encrypted
     }
 } catch (ignore: NoSuchPaddingException) {
@@ -75,7 +80,31 @@ fun encrypt(content: String?, key: Key?): ByteArray? = try {
     null
 }
 
-fun decrypt(decrypted: String?, key: Key?): ByteArray? = try {
+@JvmOverloads
+fun decrypt(decrypted: ByteArray?, key: Key? = createKey(DEFAULT_PASSWORD)): ByteArray? = try {
+    if (decrypted == null || key == null) {
+        null
+    } else {
+        val cipher = Cipher.getInstance(ALGORITHM_AES_ECB_PKCS5PADDING)
+        cipher.init(Cipher.DECRYPT_MODE, key)
+        cipher.doFinal(decrypted)
+    }
+} catch (ignore: NoSuchPaddingException) {
+    null
+} catch (ignore: NoSuchAlgorithmException) {
+    null
+} catch (ignore: UnsupportedEncodingException) {
+    null
+} catch (ignore: InvalidKeyException) {
+    null
+} catch (ignore: IllegalBlockSizeException) {
+    null
+} catch (ignore: BadPaddingException) {
+    null
+}
+
+@JvmOverloads
+fun decrypt(decrypted: String?, key: Key? = createKey(DEFAULT_PASSWORD)): ByteArray? = try {
     if (decrypted.isNullOrEmpty() || key == null) {
         null
     } else {

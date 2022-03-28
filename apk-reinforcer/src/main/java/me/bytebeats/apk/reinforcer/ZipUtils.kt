@@ -102,10 +102,10 @@ fun decompress(zipFile: String, dstPath: String) {
                 continue
             }
             out = FileOutputStream(outPath)
-            val buf1 = ByteArray(1024)
+            val buf = ByteArray(1024)
             var len: Int
-            while (`in`.read(buf1).also { len = it } > 0) {
-                out.write(buf1, 0, len)
+            while (`in`.read(buf).also { len = it } > 0) {
+                out.write(buf, 0, len)
             }
         } finally {
             `in`?.close()
