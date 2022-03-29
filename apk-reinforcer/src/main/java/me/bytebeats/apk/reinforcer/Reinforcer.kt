@@ -98,6 +98,9 @@ fun signApk(signedApkPath: String, keyStorePath: String, alignedUnsignedApkPath:
     }
 }
 
+/**
+ * Reference: {@link https://blog.csdn.net/I123456789T/article/details/91819275}
+ */
 fun main() {
     val aarFilePath = "apk-reinforcer/build/outputs/aar/apk-reinforcer-debug.aar"
     val aarUnzipDir = "apk-reinforcer/aar-unzip"
