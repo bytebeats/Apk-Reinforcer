@@ -44,7 +44,7 @@ fun encryptDex(apkFilePath: String, unzipDirPath: String) {
     val unzipDir = File(unzipDirPath)
     decompress(apkFilePath, unzipDirPath)
     //只要dex文件拿出来加密
-    val dexFiles = unzipDir.listFiles { _, name -> name.endsWith("dex") }
+    val dexFiles = unzipDir.listFiles { _, name -> name.endsWith(".dex") }
     //AES加密
     for (dexFile in dexFiles) {
         val bytes = getByteFromFile(dexFile)
@@ -76,10 +76,10 @@ fun rebuildDexIntoApk(unzipDirPath: String, unsignedApkPath: String) {
 fun alignUnsignedApk(unsignedApkPath: String, alignedUnsignedApkPath: String) {
     val alignedUnsignedApkFile = File(alignedUnsignedApkPath)
     val process =
-        Runtime.getRuntime().exec("zipalign -v -p 4 ${unsignedApkPath} ${alignedUnsignedApkFile.absolutePath}")
+        Runtime.getRuntime().exec("zipalign -v -p 4 $unsignedApkPath ${alignedUnsignedApkFile.absolutePath}")
     process.waitFor()
     if (process.exitValue() != 0) {
-        throw RuntimeException("zipalign failed");
+        throw RuntimeException("zipalign failed")
     }
 }
 
@@ -92,9 +92,9 @@ fun signApk(signedApkPath: String, keyStorePath: String, alignedUnsignedApkPath:
     val signedApkFile = File(signedApkPath)
     val jksFile = File(keyStorePath)
     val process =
-        Runtime.getRuntime().exec("apksigner sign --ks ${keyStorePath} --out $signedApkFile $alignedUnsignedApkPath")
+        Runtime.getRuntime().exec("apksigner sign --ks $keyStorePath --out $signedApkFile $alignedUnsignedApkPath")
     if (process.exitValue() != 0) {
-        throw RuntimeException("apksigner failed");
+        throw RuntimeException("apksigner failed")
     }
 }
 
